@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { 
@@ -90,7 +89,8 @@ const TransferDetailAgent = () => {
     }
     setProcessingCancel(true);
     try {
-        await invokeFunction('request-cancellation', { transfer_id: id, agent_id: user.id, reason: cancelReason }
+        const { error } = await supabase.functions.invoke('request-cancellation', {
+            body: { transfer_id: id, agent_id: user.id, reason: cancelReason }
         });
 
         if (error) throw error;

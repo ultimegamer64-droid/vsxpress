@@ -12,7 +12,6 @@ import { ArrowLeft, Loader2, CheckCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useWallet } from '@/hooks/useWallet';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import { checkTransactionStatus } from '@/lib/transactionsGuard';
 import MoneyInput from '@/components/ui/MoneyInput';
 import TransferReceipt from '@/components/TransferReceipt';
@@ -281,7 +280,8 @@ const CreateTransferForm = () => {
 
       // 3. Appel unique à l'Edge Function qui fait débit + création transfert
       // de manière atomique côté serveur
-      const data = await invokeFunction('create-transfer', {
+      const { data: funcData, error: funcError } = await supabase.functions.invoke('create-transfer', {
+        body: {
           agent_id: user.id,
           worker_id: assignedWorkerId,
           beneficiary_name: formData.beneficiaryName,

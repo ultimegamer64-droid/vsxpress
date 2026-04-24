@@ -273,7 +273,8 @@ const DepositsDashboard = () => {
         throw new Error("Session expirée. Veuillez vous reconnecter.");
       }
 
-      const data = await invokeFunction("process-deposit", { deposit_id: depositId, action, ...extraBody },
+      const { data, error } = await supabase.functions.invoke("process-deposit", {
+        body: { deposit_id: depositId, action, ...extraBody },
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },

@@ -248,7 +248,7 @@ const UserDetails = ({ user, isOpen, onClose }) => {
         formData.associated_worker !== user.associated_worker
       ) {
         if (formData.associated_worker) {
-          await invokeFunction(
+          const { error: assignError } = await supabase.functions.invoke(
             "assign-agent",
             {
               body: { agent_id: user.id, worker_id: formData.associated_worker },

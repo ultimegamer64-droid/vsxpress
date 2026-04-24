@@ -11,7 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/components/ui/use-toast';
 import { ShieldCheck, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 
 const SetSecurityQuestion = () => {
   const navigate = useNavigate();
@@ -39,7 +38,8 @@ const SetSecurityQuestion = () => {
 
     setLoading(true);
     try {
-      const data = await invokeFunction('set-security-question', { user_id: user.id, question, answer }
+      const { data, error } = await supabase.functions.invoke('set-security-question', {
+        body: { user_id: user.id, question, answer }
       });
 
       if (error) throw error;

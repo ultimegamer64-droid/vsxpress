@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2, Copy, ShieldAlert, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import { motion } from 'framer-motion';
 
 const CreateAdminForm = () => {
@@ -55,14 +54,23 @@ const CreateAdminForm = () => {
     setIsLoading(true);
 
     try {
-      const data = await invokeFunction('create-admin-account', {
+      const { data, error } = await supabase.functions.invoke('create-admin-account', {
+        body: {
             email: formData.email,
             password: formData.password,
             nom: formData.nom,
             prenom: formData.prenom
+        }
       });
 
+      if (error) throw error;
+      
+      // Handle logical errors (like duplicate user) gracefully
+      if (data && data.success === false) {
+        throw new Error(data.message || "Erreur lors de la création");
+      }
 
+      if (data?.error) throw new Error(data.error);
 
       // Success
       setCreatedInfo({

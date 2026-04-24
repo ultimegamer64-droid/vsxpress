@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2, Copy, ShieldCheck, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import { motion } from 'framer-motion';
 
 const CreateSpecialAgentForm = () => {
@@ -51,7 +50,7 @@ const CreateSpecialAgentForm = () => {
     setIsLoading(true);
 
     try {
-      const data = await invokeFunction('create-special-agent', {
+      const { data, error } = await supabase.functions.invoke('create-special-agent', {
         body: formData
       });
 

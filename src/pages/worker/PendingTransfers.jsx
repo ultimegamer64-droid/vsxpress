@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, CheckCircle2, XCircle, RefreshCw, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 
@@ -71,7 +70,8 @@ const PendingTransfers = () => {
 
     setProcessingId(id);
     try {
-      const data = await invokeFunction('validate-transfer', { transfer_id: id, worker_id: user.id, action }
+      const { data, error } = await supabase.functions.invoke('validate-transfer', {
+        body: { transfer_id: id, worker_id: user.id, action }
       });
 
       if (error) throw error;

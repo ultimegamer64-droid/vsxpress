@@ -11,7 +11,6 @@ import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, User, FileText, Loader2, History, Briefcase, UserCog } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import { useAuth } from '@/hooks/useAuth';
 import { checkTransactionStatus } from '@/lib/transactionsGuard';
 import MoneyInput from '@/components/ui/MoneyInput';
@@ -108,7 +107,8 @@ const AdminAdjustments = () => {
       const finalAmount = operationType === 'debit' ? -Math.abs(numericAmount) : Math.abs(numericAmount);
 
       // 3. Call Edge Function
-      const data = await invokeFunction('apply-adjustment', {
+      const { data, error } = await supabase.functions.invoke('apply-adjustment', {
+        body: {
           target_user_id: selectedUser,
           target_type: userType,
           amount_htg: finalAmount,

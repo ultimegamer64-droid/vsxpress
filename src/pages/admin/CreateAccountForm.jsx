@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, UserPlus, Copy, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import {
   Select,
   SelectContent,
@@ -112,7 +111,7 @@ const CreateAccountForm = () => {
       console.log(JSON.stringify(requestBody, null, 2));
       console.log('===============================');
 
-      const data = await invokeFunction('create-user', {
+      const { data, error } = await supabase.functions.invoke('create-user', {
         body: requestBody
       });
 

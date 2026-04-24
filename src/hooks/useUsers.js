@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import { useToast } from '@/components/ui/use-toast';
 
 export const useUsers = () => {
@@ -57,7 +56,8 @@ export const useUsers = () => {
 
   const updateUser = async (userId, updates) => {
     try {
-      const data = await invokeFunction('update-user', { user_id: userId, ...updates }
+      const { data, error } = await supabase.functions.invoke('update-user', {
+        body: { user_id: userId, ...updates }
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
@@ -70,7 +70,8 @@ export const useUsers = () => {
 
   const deleteUser = async (userId) => {
     try {
-      const data = await invokeFunction('delete-user', { user_id: userId }
+      const { data, error } = await supabase.functions.invoke('delete-user', {
+        body: { user_id: userId }
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);

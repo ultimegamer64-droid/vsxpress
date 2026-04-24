@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
-import { invokeFunction } from '@/lib/invokeFunction';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -323,7 +322,8 @@ const TransferDetail = () => {
 
       const action = newStatus === 'approved' ? 'validate' : 'reject';
       
-      const data = await invokeFunction('validate-transfer', { 
+      const { data, error } = await supabase.functions.invoke('validate-transfer', {
+        body: { 
           transfer_id: id, 
           worker_id: user.id, 
           action,
@@ -331,7 +331,13 @@ const TransferDetail = () => {
         }
       });
 
-
+      if (error) {
+         if (error.context?.response?.status === 403) {
+            throw new Error(t("error.transaction.disabled"));
+         }
+         throw error;
+      }
+      if (data?.error) throw new Error(data.error);
 
       if (newStatus === 'approved') {
          const { data: receiptData, error: receiptError } = await supabase
