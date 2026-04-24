@@ -39,7 +39,7 @@ const SetSecurityQuestion = () => {
 
     setLoading(true);
     try {
-      const data = await invokeFunction('set-security-question', {{ user_id: user.id, question, answer }
+      const data = await invokeFunction('set-security-question', { user_id: user.id, question, answer }
       });
 
       if (error) throw error;

@@ -183,7 +183,7 @@ const CreateAgentForm = ({ embedded = false, prefill = null }) => {
         reader.onload = async (event) => {
           try {
             const base64 = event.target.result.split(',')[1];
-            const data = await invokeFunction('upload-id-document', {{ file: base64, filename: filePath }
+            const data = await invokeFunction('upload-id-document', { file: base64, filename: filePath }
             });
 
             if (error) throw error;

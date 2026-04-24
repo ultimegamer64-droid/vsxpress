@@ -108,7 +108,7 @@ const AdminAdjustments = () => {
       const finalAmount = operationType === 'debit' ? -Math.abs(numericAmount) : Math.abs(numericAmount);
 
       // 3. Call Edge Function
-      const data = await invokeFunction('apply-adjustment', {{
+      const data = await invokeFunction('apply-adjustment', {
           target_user_id: selectedUser,
           target_type: userType,
           amount_htg: finalAmount,

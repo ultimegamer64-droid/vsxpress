@@ -281,7 +281,7 @@ const CreateTransferForm = () => {
 
       // 3. Appel unique à l'Edge Function qui fait débit + création transfert
       // de manière atomique côté serveur
-      const data = await invokeFunction('create-transfer', {{
+      const data = await invokeFunction('create-transfer', {
           agent_id: user.id,
           worker_id: assignedWorkerId,
           beneficiary_name: formData.beneficiaryName,

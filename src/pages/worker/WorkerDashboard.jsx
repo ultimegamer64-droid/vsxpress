@@ -310,7 +310,7 @@ const WorkerDashboard = () => {
         const periodForFn = timeFilter === "year" ? "all" : timeFilter;
 
         const { data: statsData, error: statsError } =
-          await invokeFunction("get-worker-stats", {{
+          await invokeFunction("get-worker-stats", {
               worker_id: user.id,
               period: periodForFn,
               start_date: rangeLocal.startISO,

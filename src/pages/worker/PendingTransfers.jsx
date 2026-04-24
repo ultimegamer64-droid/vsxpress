@@ -71,7 +71,7 @@ const PendingTransfers = () => {
 
     setProcessingId(id);
     try {
-      const data = await invokeFunction('validate-transfer', {{ transfer_id: id, worker_id: user.id, action }
+      const data = await invokeFunction('validate-transfer', { transfer_id: id, worker_id: user.id, action }
       });
 
       if (error) throw error;

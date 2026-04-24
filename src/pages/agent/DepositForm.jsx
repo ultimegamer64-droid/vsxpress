@@ -153,7 +153,7 @@ const DepositForm = () => {
       if (!session) throw new Error(t("settings.invalidSession"));
 
       // Call Edge Function 'submit-deposit'
-      const data = await invokeFunction("submit-deposit", {{
+      const data = await invokeFunction("submit-deposit", {
           agent_id: user.id,
           amount: amountNumber,
           method: selectedMethod,

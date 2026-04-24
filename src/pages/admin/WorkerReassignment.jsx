@@ -78,7 +78,7 @@ const WorkerReassignment = () => {
 
     setProcessing(true);
     try {
-      const data = await invokeFunction('reassign-transfers', {{ 
+      const data = await invokeFunction('reassign-transfers', { 
           from_worker_id: sourceWorker, 
           to_worker_id: destWorker,
           admin_id: user.id 

@@ -55,7 +55,7 @@ const CreateAdminForm = () => {
     setIsLoading(true);
 
     try {
-      const data = await invokeFunction('create-admin-account', {{
+      const data = await invokeFunction('create-admin-account', {
             email: formData.email,
             password: formData.password,
             nom: formData.nom,

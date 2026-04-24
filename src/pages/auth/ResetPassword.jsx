@@ -46,7 +46,7 @@ const ResetPassword = () => {
     setLoading(true);
     let responseData = null;
     try {
-      const data = await invokeFunction('reset-password', {{ email, action: 'get_question' }
+      const data = await invokeFunction('reset-password', { email, action: 'get_question' }
       });
 
       responseData = data;
@@ -94,7 +94,7 @@ const ResetPassword = () => {
     setLoading(true);
     let responseData = null;
     try {
-      const data = await invokeFunction('reset-password', {{ email, answer, new_password: newPassword, action: 'verify_reset' }
+      const data = await invokeFunction('reset-password', { email, answer, new_password: newPassword, action: 'verify_reset' }
       });
 
       responseData = data;

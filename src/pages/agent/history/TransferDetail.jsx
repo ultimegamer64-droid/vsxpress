@@ -90,7 +90,7 @@ const TransferDetailAgent = () => {
     }
     setProcessingCancel(true);
     try {
-        await invokeFunction('request-cancellation', {{ transfer_id: id, agent_id: user.id, reason: cancelReason }
+        await invokeFunction('request-cancellation', { transfer_id: id, agent_id: user.id, reason: cancelReason }
         });
 
         if (error) throw error;
