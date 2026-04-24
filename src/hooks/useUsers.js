@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -7,7 +7,7 @@ export const useUsers = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -15,7 +15,8 @@ export const useUsers = () => {
         .select(`
           *,
           wallets (
-            balance,
+            balance_htg,
+            balance_dop,
             credit_limit
           )
         `);
@@ -26,13 +27,13 @@ export const useUsers = () => {
       console.error('Error fetching users:', error);
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: 'Failed to fetch users'
+        title: 'Erreur',
+        description: 'Impossible de charger les utilisateurs'
       });
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -41,7 +42,7 @@ export const useUsers = () => {
       .channel('public:users')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, fetchUsers)
       .subscribe();
-      
+
     const walletSub = supabase
       .channel('public:wallets')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'wallets' }, fetchUsers)
@@ -51,17 +52,15 @@ export const useUsers = () => {
       supabase.removeChannel(userSub);
       supabase.removeChannel(walletSub);
     };
-  }, []);
+  }, [fetchUsers]);
 
   const updateUser = async (userId, updates) => {
     try {
       const { data, error } = await supabase.functions.invoke('update-user', {
         body: { user_id: userId, ...updates }
       });
-
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
-
       return true;
     } catch (error) {
       console.error('Update error:', error);
@@ -74,10 +73,8 @@ export const useUsers = () => {
       const { data, error } = await supabase.functions.invoke('delete-user', {
         body: { user_id: userId }
       });
-
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
-
       return true;
     } catch (error) {
       console.error('Delete error:', error);

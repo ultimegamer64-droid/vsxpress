@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/contexts/AuthContext';
-import { formatMoney, formatMoneyDOP, formatMoneyHTG } from '@/lib/formatMoney';
+import { useAuth } from '@/hooks/useAuth';
+import { formatMoneyDOP, formatMoneyHTG } from '@/lib/formatMoney';
 
 export const useWallet = () => {
   const { user } = useAuth();
@@ -12,14 +12,12 @@ export const useWallet = () => {
   const [exchangeRate, setExchangeRate] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  // Task 4: Parallel Fetching & Correct Calculation
   const fetchWalletData = useCallback(async () => {
     if (!user?.id) return;
 
     try {
       setLoading(true);
 
-      // (1) Fetch wallet and user rate in parallel
       const [walletRes, userRes] = await Promise.all([
         supabase
           .from('wallets')
@@ -36,12 +34,9 @@ export const useWallet = () => {
       if (walletRes.error) throw walletRes.error;
       if (userRes.error) throw userRes.error;
 
-      // Parse Wallet Data
       const htg = Number(walletRes.data?.balance_htg) || 0;
       const dop = Number(walletRes.data?.balance_dop) || 0;
       const limit = Number(walletRes.data?.credit_limit) || 0;
-
-      // Parse Rate (Priority: exchange_rate > taux_change > 1)
       const rateRaw = Number(userRes.data?.exchange_rate) || Number(userRes.data?.taux_change) || 1;
       const rate = rateRaw > 0 ? rateRaw : 1;
 
@@ -49,7 +44,6 @@ export const useWallet = () => {
       setBalanceDop(dop);
       setCreditLimit(limit);
       setExchangeRate(rate);
-
     } catch (error) {
       console.error('Error fetching wallet/rate:', error);
     } finally {
@@ -60,39 +54,33 @@ export const useWallet = () => {
   useEffect(() => {
     fetchWalletData();
 
-    // Subscribe to changes
     const walletSub = supabase
       .channel(`wallet-realtime-${user?.id}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'wallets', filter: `user_id=eq.${user?.id}` }, 
-        (payload) => {
-          if (payload.new) {
-            setBalanceHtg(Number(payload.new.balance_htg) || 0);
-            setBalanceDop(Number(payload.new.balance_dop) || 0);
-            setCreditLimit(Number(payload.new.credit_limit) || 0);
-          }
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'wallets',
+        filter: `user_id=eq.${user?.id}`
+      }, (payload) => {
+        if (payload.new) {
+          setBalanceHtg(Number(payload.new.balance_htg) || 0);
+          setBalanceDop(Number(payload.new.balance_dop) || 0);
+          setCreditLimit(Number(payload.new.credit_limit) || 0);
         }
-      )
+      })
       .subscribe();
 
-    return () => {
-      supabase.removeChannel(walletSub);
-    };
+    return () => { supabase.removeChannel(walletSub); };
   }, [user?.id, fetchWalletData]);
 
-  // (2) & (3) Calculate available balances
-  // availableBalanceHtg = actual HTG balance + (Credit Limit converted to HTG)
   const availableBalanceHtg = balanceHtg + (creditLimit * exchangeRate);
-
-  // availableBalanceDop = actual DOP balance + Credit Limit (DOP) + (HTG balance converted to DOP)
-  // Note: Usually agents operate in HTG negative, so this conversion logic depends on if HTG is positive or negative.
-  // Standard logic requested: 
   const availableBalanceDop = balanceDop + creditLimit + (balanceHtg / (exchangeRate > 0 ? exchangeRate : 1));
 
   return {
     balanceHtg,
     balanceDop,
     creditLimit,
-    exchangeRate, 
+    exchangeRate,
     availableBalanceHtg,
     availableBalanceDop,
     formattedBalanceHtg: formatMoneyHTG(balanceHtg),
