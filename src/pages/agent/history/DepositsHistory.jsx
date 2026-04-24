@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { Loader2, Eye, X, Calendar, CheckCircle2, AlertCircle, Clock, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";

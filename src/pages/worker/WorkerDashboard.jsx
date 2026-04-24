@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useWorkerNotifications } from "@/hooks/useWorkerNotifications";
 import { useKpiNotifications } from "@/hooks/useKpiNotifications"; 
 import { supabase } from "@/lib/supabase";
