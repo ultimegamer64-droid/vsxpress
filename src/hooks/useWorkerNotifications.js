@@ -1,6 +1,6 @@
 // src/hooks/useWorkerNotifications.js
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabase";
 
 export const useWorkerNotifications = () => {
