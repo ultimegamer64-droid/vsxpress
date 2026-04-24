@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import {
   Menu,
   LogOut,
@@ -211,7 +211,7 @@ const MainHeader = () => {
         >
           <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#1A1A1A] border border-[#333] group-hover:border-[#D4AF37] transition-colors">
             <img
-              src="https://horizons-cdn.hostinger.com/33b3eaaa-66f9-4e26-bd8b-9ffa2c491ada/0ccbbb834409cecfb75836c33dad2124.jpg"
+              src="/logo.png"
               alt="VS XPRESS ENTREPRISES"
               className="w-full h-full object-cover"
             />
