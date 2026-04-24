@@ -331,13 +331,7 @@ const TransferDetail = () => {
         }
       });
 
-      if (error) {
-         if (error.context?.response?.status === 403) {
-            throw new Error(t("error.transaction.disabled"));
-         }
-         throw error;
-      }
-      if (data?.error) throw new Error(data.error);
+
 
       if (newStatus === 'approved') {
          const { data: receiptData, error: receiptError } = await supabase

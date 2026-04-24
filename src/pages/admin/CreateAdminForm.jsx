@@ -60,17 +60,9 @@ const CreateAdminForm = () => {
             password: formData.password,
             nom: formData.nom,
             prenom: formData.prenom
-        }
       });
 
-      if (error) throw error;
-      
-      // Handle logical errors (like duplicate user) gracefully
-      if (data && data.success === false) {
-        throw new Error(data.message || "Erreur lors de la création");
-      }
 
-      if (data?.error) throw new Error(data.error);
 
       // Success
       setCreatedInfo({
