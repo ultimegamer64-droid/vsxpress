@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, UserPlus, Loader2, Copy, Upload, FileCheck, Calculator, Info, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { invokeFunction } from '@/lib/invokeFunction';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { computeCreditPreview } from '@/lib/creditPreviewUtils';
 import MoneyInput from '@/components/ui/MoneyInput';
@@ -182,8 +183,7 @@ const CreateAgentForm = ({ embedded = false, prefill = null }) => {
         reader.onload = async (event) => {
           try {
             const base64 = event.target.result.split(',')[1];
-            const { data, error } = await supabase.functions.invoke('upload-id-document', {
-              body: { file: base64, filename: filePath }
+            const data = await invokeFunction('upload-id-document', {{ file: base64, filename: filePath }
             });
 
             if (error) throw error;
@@ -269,7 +269,7 @@ const CreateAgentForm = ({ embedded = false, prefill = null }) => {
         uploaded_id_url: finalUrl
       };
 
-      const { data, error } = await supabase.functions.invoke('create-agent-account', {
+      const data = await invokeFunction('create-agent-account', {
         body: payload
       });
 

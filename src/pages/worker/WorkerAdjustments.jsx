@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
+import { invokeFunction } from '@/lib/invokeFunction';
 import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, Loader2, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -70,7 +71,7 @@ const WorkerAdjustments = () => {
     const body = { adjustment_id: id, action };
 
     try {
-      const { error } = await supabase.functions.invoke('approve-adjustment', {
+      await invokeFunction('approve-adjustment', {
         body: body
       });
 

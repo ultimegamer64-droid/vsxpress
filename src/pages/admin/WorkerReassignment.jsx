@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, User, RefreshCw, Loader2, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { invokeFunction } from '@/lib/invokeFunction';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -77,8 +78,7 @@ const WorkerReassignment = () => {
 
     setProcessing(true);
     try {
-      const { data, error } = await supabase.functions.invoke('reassign-transfers', {
-        body: { 
+      const data = await invokeFunction('reassign-transfers', {{ 
           from_worker_id: sourceWorker, 
           to_worker_id: destWorker,
           admin_id: user.id 

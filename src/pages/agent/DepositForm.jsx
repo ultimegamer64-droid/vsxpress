@@ -153,8 +153,7 @@ const DepositForm = () => {
       if (!session) throw new Error(t("settings.invalidSession"));
 
       // Call Edge Function 'submit-deposit'
-      const { data, error } = await supabase.functions.invoke("submit-deposit", {
-        body: {
+      const data = await invokeFunction("submit-deposit", {{
           agent_id: user.id,
           amount: amountNumber,
           method: selectedMethod,
@@ -167,15 +166,7 @@ const DepositForm = () => {
         },
       });
 
-      if (error) {
-        console.error("Edge Function Error:", error);
-        if (error.context?.response?.status === 403) {
-          throw new Error(t("deposit.depositError"));
-        }
-        throw new Error(error.message || t("deposit.depositError"));
-      }
 
-      if (data?.error) throw new Error(data.error);
 
       toast({
         title: t("common.success"),

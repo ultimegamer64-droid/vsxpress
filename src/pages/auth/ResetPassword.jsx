@@ -8,7 +8,26 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/supabase';
+import { invokeFunction } from '@/lib/invokeFunction';
 import { ArrowLeft, Loader2, KeyRound } from 'lucide-react';
+
+const ERROR_MESSAGES = {
+  'Incorrect answer': 'Réponse incorrecte. Veuillez réessayer.',
+  'User not found': 'Aucun compte trouvé avec cet email.',
+  'No security question set for this user': "Ce compte n'a pas de question de sécurité configurée.",
+  'Security data not found': 'Question de sécurité introuvable.',
+  'Missing fields': 'Veuillez remplir tous les champs.',
+};
+
+const getFriendlyError = (error, data) => {
+  const raw =
+    data?.error ||
+    error?.context?.json?.error ||
+    error?.context?.json?.message ||
+    error?.message ||
+    '';
+  return ERROR_MESSAGES[raw] || raw || 'Une erreur est survenue. Veuillez réessayer.';
+};
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -25,25 +44,27 @@ const ResetPassword = () => {
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    let responseData = null;
     try {
-      const { data, error } = await supabase.functions.invoke('reset-password', {
-        body: { email, action: 'get_question' }
+      const data = await invokeFunction('reset-password', {{ email, action: 'get_question' }
       });
 
-      if (error) throw error;
+      responseData = data;
+
       if (data?.error) throw new Error(data.error);
+      if (error) throw error;
 
       if (data?.question) {
         setSecurityQuestion(data.question);
         setStep(2);
       } else {
-        throw new Error('No security question found for this user.');
+        throw new Error('No security question set for this user');
       }
     } catch (error) {
       toast({
-        variant: "destructive",
+        variant: 'destructive',
         title: t('common.error'),
-        description: error.message
+        description: getFriendlyError(error, responseData)
       });
     } finally {
       setLoading(false);
@@ -54,33 +75,44 @@ const ResetPassword = () => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
       toast({
-        variant: "destructive",
+        variant: 'destructive',
         title: t('common.error'),
-        description: t('validation.passwordMismatch')
+        description: 'Les mots de passe ne correspondent pas.'
+      });
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast({
+        variant: 'destructive',
+        title: t('common.error'),
+        description: 'Le mot de passe doit contenir au moins 6 caractères.'
       });
       return;
     }
 
     setLoading(true);
+    let responseData = null;
     try {
-      const { data, error } = await supabase.functions.invoke('reset-password', {
-        body: { email, answer, new_password: newPassword, action: 'verify_reset' }
+      const data = await invokeFunction('reset-password', {{ email, answer, new_password: newPassword, action: 'verify_reset' }
       });
 
-      if (error) throw error;
+      responseData = data;
+
       if (data?.error) throw new Error(data.error);
+      if (error) throw error;
 
       toast({
         title: t('common.success'),
-        description: t('auth.resetPassword.success')
+        description: 'Mot de passe réinitialisé avec succès.'
       });
-      
+
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
       toast({
-        variant: "destructive",
+        variant: 'destructive',
         title: t('common.error'),
-        description: error.message
+        description: getFriendlyError(error, responseData)
       });
     } finally {
       setLoading(false);
@@ -127,8 +159,8 @@ const ResetPassword = () => {
             </form>
           ) : (
             <form onSubmit={handleResetSubmit} className="space-y-6">
-              <div className="p-4 bg-[#D4AF37]/5 rounded-lg border border-[#D4AF37]/20 mb-4">
-                <p className="text-sm text-[#D4AF37] font-medium mb-1">{t('auth.resetPassword.securityQuestion')}:</p>
+              <div className="p-4 bg-[#D4AF37]/5 rounded-lg border border-[#D4AF37]/20">
+                <p className="text-sm text-[#D4AF37] font-medium mb-1">{t('auth.resetPassword.securityQuestion')} :</p>
                 <p className="text-white">{securityQuestion}</p>
               </div>
 

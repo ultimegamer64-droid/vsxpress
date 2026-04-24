@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2, Copy, ShieldAlert, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { invokeFunction } from '@/lib/invokeFunction';
 import { motion } from 'framer-motion';
 
 const CreateAdminForm = () => {
@@ -54,8 +55,7 @@ const CreateAdminForm = () => {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('create-admin-account', {
-        body: {
+      const data = await invokeFunction('create-admin-account', {{
             email: formData.email,
             password: formData.password,
             nom: formData.nom,

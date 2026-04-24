@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2, Copy, UserPlus, Briefcase, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { invokeFunction } from '@/lib/invokeFunction';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CreateWorkerForm = () => {
@@ -70,7 +71,7 @@ const CreateWorkerForm = () => {
 
     try {
       // 1) Crée le worker via Edge Function (Auth + DB + Wallet)
-      const { data, error } = await supabase.functions.invoke('create-worker', {
+      const data = await invokeFunction('create-worker', {
         body: formData,
       });
 

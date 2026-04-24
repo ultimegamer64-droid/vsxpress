@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
+import { invokeFunction } from '@/lib/invokeFunction';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -322,8 +323,7 @@ const TransferDetail = () => {
 
       const action = newStatus === 'approved' ? 'validate' : 'reject';
       
-      const { data, error } = await supabase.functions.invoke('validate-transfer', {
-        body: { 
+      const data = await invokeFunction('validate-transfer', {{ 
           transfer_id: id, 
           worker_id: user.id, 
           action,
