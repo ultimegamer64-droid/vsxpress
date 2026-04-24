@@ -7,7 +7,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, CheckCircle2, XCircle, RefreshCw, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { formatDateTimeLocal } from '@/lib/dateUtils';
 import { formatMoneyDOP, formatMoneyHTG } from '@/lib/formatMoney';
 

@@ -14,7 +14,7 @@ import {
   CheckCircle, XCircle, MessageSquare, AlertCircle, Upload, Eye, Loader2 
 } from 'lucide-react';
 import TransferChat from '@/components/TransferChat';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { computeEquivalentFromHTG, formatExchangeRateInfo } from '@/lib/currencyUtils';
 import { checkTransactionStatus } from '@/lib/transactionsGuard';
 import { getTransferCode } from '@/lib/codeUtils';

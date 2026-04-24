@@ -11,7 +11,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, User, FileText, Loader2, History, Briefcase, UserCog } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { checkTransactionStatus } from '@/lib/transactionsGuard';
 import MoneyInput from '@/components/ui/MoneyInput';
 import { formatMoneyHTG } from '@/lib/formatMoney';

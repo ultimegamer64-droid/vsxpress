@@ -22,7 +22,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import TransferChat from '@/components/TransferChat';
 import { computeEquivalentFromHTG, formatExchangeRateInfo } from '@/lib/currencyUtils';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { getTransferCode } from '@/lib/codeUtils';
 import { formatDateTimeLocal } from '@/lib/dateUtils';
 

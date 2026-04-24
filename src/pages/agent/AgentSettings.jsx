@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Shield, Globe, Lock, ChevronRight, Bell, Play, Check } from 'lucide-react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { NOTIFICATION_SOUNDS, DEFAULT_SOUND_AGENT, getUserSound, saveUserSound, playSound } from '@/hooks/useNotificationSound';
 
 const AgentSettings = () => {

@@ -9,7 +9,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, User, RefreshCw, Loader2, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 
 const WorkerReassignment = () => {
   const navigate = useNavigate();
