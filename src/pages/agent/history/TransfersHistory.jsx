@@ -65,7 +65,7 @@ const TransfersHistory = () => {
 
     // Realtime Listener
     const channel = supabase
-      .channel('agent-transfers-history')
+      .channel(`agent-transfers-history-${user.id}`)
       .on(
         'postgres_changes',
         {

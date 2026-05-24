@@ -63,7 +63,7 @@ const DepositForm = () => {
       return;
     }
 
-    if (!["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
+    if (!file.type.startsWith("image/")) {
       toast({
         variant: "destructive",
         title: t("common.error"),

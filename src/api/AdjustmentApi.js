@@ -91,11 +91,13 @@ export const AdjustmentApi = {
   // Get current user's adjustments
   getUserAdjustments: async (limit = 20, offset = 0) => {
     try {
-      // Using direct query for better filtering/sorting options than the simple RPC
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (authError || !user) throw new Error('Not authenticated');
+
       const { data, count, error } = await supabase
         .from('adjustments')
         .select('*', { count: 'exact' })
-        .eq('target_user_id', (await supabase.auth.getUser()).data.user?.id)
+        .eq('target_user_id', user.id)
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
 

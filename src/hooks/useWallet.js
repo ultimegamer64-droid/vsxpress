@@ -68,6 +68,18 @@ export const useWallet = () => {
           setCreditLimit(Number(payload.new.credit_limit) || 0);
         }
       })
+      // FIX : Mise à jour du taux en temps réel quand l'admin le change
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'users',
+        filter: `id=eq.${user?.id}`
+      }, (payload) => {
+        if (payload.new) {
+          const rateRaw = Number(payload.new.exchange_rate) || Number(payload.new.taux_change) || 1;
+          setExchangeRate(rateRaw > 0 ? rateRaw : 1);
+        }
+      })
       .subscribe();
 
     return () => { supabase.removeChannel(walletSub); };
