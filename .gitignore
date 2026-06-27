@@ -1,2 +1,5 @@
 dist/
 fix_*.py
+.env.local
+.env
+.claude/
