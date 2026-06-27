@@ -20,9 +20,6 @@ import CreateWorkerForm from "./CreateWorkerForm";
 import CreateSpecialAgentForm from "./CreateSpecialAgentForm";
 import CreateAdminForm from "./CreateAdminForm";
 
-/**
- * 🔥 SOURCE UNIQUE DE VÉRITÉ POUR LES TITRES
- */
 const ROLE_CONFIG = {
   agent: {
     pageTitle: "Créer un Agent",

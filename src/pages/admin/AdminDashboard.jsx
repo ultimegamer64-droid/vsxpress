@@ -148,7 +148,6 @@ const AdminDashboard = () => {
     }
   }, [refreshRegistrations]);
 
-  // Fetch Global Transaction Settings
   const fetchSettings = useCallback(async () => {
     try {
       setSettingsLoading(true);

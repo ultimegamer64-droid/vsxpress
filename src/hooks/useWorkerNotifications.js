@@ -10,8 +10,7 @@ export const useWorkerNotifications = () => {
   const [pendingRegulations, setPendingRegulations] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // évite setState après unmount (safe)
-  const mountedRef = useRef(false);
+    const mountedRef = useRef(false);
 
   const fetchCounts = useCallback(async () => {
     if (!user?.id) return;
@@ -19,7 +18,6 @@ export const useWorkerNotifications = () => {
     try {
       if (mountedRef.current) setLoading(true);
 
-      // 1) Transfers "en attente"
       const { count: transfersCount, error: transfersError } = await supabase
         .from("transfers")
         .select("*", { count: "exact", head: true })
@@ -32,11 +30,8 @@ export const useWorkerNotifications = () => {
         console.error("Error fetching transfers count:", transfersError);
       }
 
-      // 2) Régularisations (worker_adjustments)
-      // 🎯 On veut uniquement celles qui nécessitent encore une action du worker
       const pendingStates = ["pending", "proposed", "proposé", "en_attente", "waiting"];
 
-      // États "décidés" possibles (ajuste si tu utilises d'autres mots)
       const decidedStates = [
         "accepté",
         "refusé",
@@ -51,18 +46,6 @@ export const useWorkerNotifications = () => {
 
       const pendingCSV = pendingStates.join(",");
       const decidedCSV = decidedStates.join(",");
-
-      /**
-       * ✅ LOGIQUE :
-       * - decided_at IS NULL  (si tu le remplis quand accepté/refusé)
-       * - EXCLURE toute ligne où statut OU status est "accepté/refusé/..."
-       * - Compter:
-       *    A) statut IN pending
-       *    OU
-       *    B) statut IS NULL ET status IN pending
-       *
-       * Ça évite le cas: statut="accepté" mais status="proposé" (ne sera plus compté)
-       */
       const { count: adjCount, error: adjError } = await supabase
         .from("worker_adjustments")
         .select("*", { count: "exact", head: true })

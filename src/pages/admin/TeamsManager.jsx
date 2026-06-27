@@ -77,7 +77,6 @@ const TeamsManager = () => {
   // For the "Move" modal, only show agents who ARE assigned
   const assignedAgents = agents.filter(a => a.associated_worker);
 
-  // Get current team of selected agent for display
   const getAgentCurrentTeam = (agentId) => {
     return teams.find(team => team.agents_assignes?.includes(agentId));
   };

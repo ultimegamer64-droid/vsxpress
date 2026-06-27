@@ -119,7 +119,7 @@ const RegistrationRequestsList = () => {
       setExistingIndex({ byEmail, byWhatsapp });
     } catch (e) {
       console.error('Error fetching existing accounts:', e);
-      // We don’t hard-fail the page; only warn.
+      // non-bloquant
       toast({
         variant: 'destructive',
         title: t('common.error'),

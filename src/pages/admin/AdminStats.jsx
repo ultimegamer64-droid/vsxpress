@@ -121,7 +121,6 @@ const AdminStats = () => {
     };
   };
 
-  // Fetch Fees Data with date filter
   const fetchFeesData = async () => {
     try {
       const dateRange = getDateRange();
@@ -192,7 +191,6 @@ const AdminStats = () => {
     }
   };
 
-  // Fetch Credits Data
   const fetchCreditsData = async () => {
     try {
       const { data: agents, error: agentsError } = await supabase
@@ -266,7 +264,6 @@ const AdminStats = () => {
     }
   };
 
-  // Fetch Worker Balances
   const fetchWorkerBalances = async () => {
     try {
       const { data: workers, error: workersError } = await supabase
@@ -361,7 +358,6 @@ const AdminStats = () => {
     }
   };
 
-  // Fetch Assets Data
   const fetchAssetsData = async () => {
     try {
       const { data: agents, error: agentsError } = await supabase

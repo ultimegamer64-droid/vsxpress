@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 export const usePushNotifications = () => {
   useEffect(() => {
-    // This hook is a placeholder to resolve the missing import in AuthContext.
     // It is intended to handle Push Notification logic and sync with 'user_fcm_tokens' table.
     
     const init = async () => {

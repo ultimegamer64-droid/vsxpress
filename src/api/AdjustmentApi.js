@@ -61,7 +61,6 @@ export const AdjustmentApi = {
     }
   },
 
-  // Get all adjustments (Admin)
   getAdjustments: async (limit = 20, offset = 0, statusFilter = 'all') => {
     try {
       let query = supabase
@@ -88,7 +87,6 @@ export const AdjustmentApi = {
     }
   },
 
-  // Get current user's adjustments
   getUserAdjustments: async (limit = 20, offset = 0) => {
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -109,7 +107,6 @@ export const AdjustmentApi = {
     }
   },
 
-  // Get count of pending adjustments for current user
   getPendingCount: async () => {
     try {
       const { data, error } = await supabase.rpc('get_pending_adjustments_count');

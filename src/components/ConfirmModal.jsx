@@ -12,13 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle2, XCircle, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-/**
- * ConfirmModal - version améliorée
- * - Centre écran (Dialog le fait déjà)
- * - Animation entrée/sortie
- * - Support "mode" : confirm | success | error | info
- * - En mode success/info/error : un seul bouton (OK)
- */
 const ConfirmModal = ({
   isOpen,
   onClose,

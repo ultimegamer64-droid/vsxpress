@@ -65,7 +65,6 @@ const CreateAdminForm = () => {
 
       if (error) throw error;
       
-      // Handle logical errors (like duplicate user) gracefully
       if (data && data.success === false) {
         throw new Error(data.message || "Erreur lors de la création");
       }

@@ -62,7 +62,6 @@ const PendingTransfers = () => {
 
   const handleAction = async (id, action) => {
     // action is 'approve' or 'reject'
-    // This view might not support file upload, so we redirect to detail for approval
     if (action === 'approve') {
        navigate(`/worker/transfer/${id}`);
        return;

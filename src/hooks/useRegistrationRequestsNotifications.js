@@ -11,7 +11,6 @@ export const useRegistrationRequestsNotifications = () => {
   const fetchCount = useCallback(async () => {
     if (!user) return;
     
-    // Check if user is admin before fetching sensitive data count
     // (Optimization: though RLS protects data, skipping request saves resources)
     const { data: userData } = await supabase
       .from('users')

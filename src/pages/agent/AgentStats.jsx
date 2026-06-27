@@ -204,7 +204,7 @@ const AgentStats = () => {
 
       // Process Deposits
       const depositStats = deposits.reduce((acc, curr) => {
-        const amount = Number(curr.amount || curr.montant || 0); // Handle schema variations
+        const amount = Number(curr.amount || curr.montant || 0);
         const status = (curr.statut || curr.status || '').toLowerCase();
         const method = (curr.methode || 'Autre').trim();
 
@@ -272,7 +272,6 @@ const AgentStats = () => {
     try {
       const range = getDateRange();
       
-      // Fetch fresh data for export to ensure we have everything if paginated in future
       let query = supabase
         .from('transfers')
         .select('created_at, beneficiary_name, amount_dop, status, operator, transfer_number, id')

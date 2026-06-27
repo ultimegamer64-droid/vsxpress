@@ -9,7 +9,6 @@ import ht from './locales/ht.json';
 // Missing key handler to display readable fallback instead of raw keys
 const parseMissingKeyHandler = (key) => {
   if (!key) return '';
-  // Returns the last segment of the key (e.g., 'auth.login.title' -> 'title')
   const parts = key.split('.');
   const lastPart = parts[parts.length - 1];
   // Convert camelCase to Title Case for better readability
@@ -35,7 +34,7 @@ i18n
       es: { translation: es },
       ht: { translation: ht }
     },
-    lng: savedLanguage, // Set explicit initial language
+    lng: savedLanguage,
     fallbackLng: 'fr',
     supportedLngs: ['fr', 'es', 'ht'],
     debug: false,

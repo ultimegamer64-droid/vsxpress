@@ -165,7 +165,6 @@ const CreateTransferForm = () => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       
-      // Set dimensions
       canvas.width = 600;
       canvas.height = 800;
       
@@ -302,7 +301,6 @@ const CreateTransferForm = () => {
       if (funcError) throw funcError;
       if (funcData?.error) throw new Error(funcData.error);
 
-      // Fetch le transfert créé pour avoir le transfer_number
       const { data: fetchTransfer } = await supabase
         .from('transfers')
         .select('transfer_number, created_at')
